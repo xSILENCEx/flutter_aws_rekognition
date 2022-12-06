@@ -1,3 +1,4 @@
+import 'package:flutter_aws_rekognition/src/enums/landmarks_type.dart';
 import 'package:flutter_aws_rekognition/src/helpers/as_t.dart';
 
 class Landmarks {
@@ -8,12 +9,12 @@ class Landmarks {
   });
 
   factory Landmarks.fromJson(Map<String, dynamic> json) => Landmarks(
-        type: asT<String>(json['Type']),
+        type: asT<String>(json['Type']).landmarksType,
         x: asT<double>(json['X']),
         y: asT<double>(json['Y']),
       );
 
-  final String type;
+  final LandmarksType type;
   final double x;
   final double y;
 
@@ -23,7 +24,7 @@ class Landmarks {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'Type': type,
+        'Type': type.toStr,
         'X': x,
         'Y': y,
       };

@@ -4,6 +4,8 @@ import 'dart:convert';
 
 import 'package:aws_common/aws_common.dart';
 import 'package:aws_signature_v4/aws_signature_v4.dart';
+import 'package:flutter_aws_rekognition/src/enums/attributes.dart';
+import 'package:flutter_aws_rekognition/src/enums/quality_filter.dart';
 import 'package:flutter_aws_rekognition/src/models/compare_faces/compare_faces_data.dart';
 import 'package:flutter_aws_rekognition/src/models/detect_faces/detect_faces_data.dart';
 import 'package:flutter_aws_rekognition/src/models/request_object/aws_image.dart';
@@ -38,7 +40,7 @@ class AWSRekognition {
   static Future<DetectFacesData> detectFaces(
     AWSImage image, {
     String? region,
-    List<String>? attributes,
+    List<Attributes> attributes = const <Attributes>[Attributes.DEFAULT],
   }) async {
     final String? regionName = region ?? getConfig.region;
 
@@ -55,7 +57,7 @@ class AWSRekognition {
       body: json.encode(
         <String, dynamic>{
           'Image': image.toJson(bucket: getConfig.bucket),
-          'Attributes': attributes ?? <String>['ALL'],
+          'Attributes': attributes.map((Attributes attribute) => attribute.toStr).toList(),
         },
       ).codeUnits,
     );
@@ -74,7 +76,8 @@ class AWSRekognition {
   static Future<CompareFacesData> compareFaces({
     required AWSImage sourceImage,
     required AWSImage targetImage,
-    required double similarityThreshold,
+    double? similarityThreshold,
+    QualityFilter? qualityFilter,
     String? region,
   }) async {
     final String? regionName = region ?? getConfig.region;
@@ -93,7 +96,8 @@ class AWSRekognition {
         <String, dynamic>{
           'SourceImage': sourceImage.toJson(bucket: getConfig.bucket),
           'TargetImage': targetImage.toJson(bucket: getConfig.bucket),
-          'SimilarityThreshold': similarityThreshold,
+          if (similarityThreshold != null) 'SimilarityThreshold': similarityThreshold,
+          if (qualityFilter != null) 'QualityFilter': qualityFilter.toStr,
         },
       ).codeUnits,
     );

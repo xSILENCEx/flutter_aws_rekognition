@@ -43,7 +43,9 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     AWSRekognition.init(
       const AWSConfig(
+        // replace with your AccessKeyId
         awsAccessKeyId: String.fromEnvironment('ACCESS_KEY_ID'),
+        // replace with your SecretAccessKey
         awsSecretAccessKey: String.fromEnvironment('SECRET_ACCESS_KEY'),
         bucket: 'gps-test',
         region: 'us-east-2',

@@ -1,3 +1,4 @@
+import 'package:flutter_aws_rekognition/src/enums/gender_type.dart';
 import 'package:flutter_aws_rekognition/src/helpers/as_t.dart';
 
 class Gender {
@@ -8,11 +9,11 @@ class Gender {
 
   factory Gender.fromJson(Map<String, dynamic> json) => Gender(
         confidence: asT<double>(json['Confidence']),
-        value: asT<String>(json['Value']),
+        value: asT<String>(json['Value']).gender,
       );
 
   final double confidence;
-  final String value;
+  final GenderType value;
 
   @override
   String toString() {
@@ -21,6 +22,6 @@ class Gender {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'Confidence': confidence,
-        'Value': value,
+        'Value': value.toStr,
       };
 }

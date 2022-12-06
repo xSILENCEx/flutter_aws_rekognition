@@ -1,3 +1,4 @@
+import 'package:flutter_aws_rekognition/src/enums/emotions_type.dart';
 import 'package:flutter_aws_rekognition/src/helpers/as_t.dart';
 
 class Emotions {
@@ -8,11 +9,11 @@ class Emotions {
 
   factory Emotions.fromJson(Map<String, dynamic> json) => Emotions(
         confidence: asT<double>(json['Confidence']),
-        type: asT<String>(json['Type']),
+        type: asT<String>(json['Type']).emotions,
       );
 
   final double confidence;
-  final String type;
+  final EmotionsType type;
 
   @override
   String toString() {
@@ -21,6 +22,6 @@ class Emotions {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'Confidence': confidence,
-        'Type': type,
+        'Type': type.toStr,
       };
 }
